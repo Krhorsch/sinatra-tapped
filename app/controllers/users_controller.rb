@@ -4,15 +4,15 @@ class UsersController < ApplicationController
     if !logged_in?
       erb :"users/create_user"
     else
-      redirect to " "
+      erb :"users/show"
     end
   end
 
   post '/signup' do
     if !params["username"].empty? && !params["password"].empty? && !params["email"].empty?
-      @user = User.create(username: params["username"], password: params["password"], email: params["email"])
+      @user = User.create(username: params["username"], password_digest: params["password"], email: params["email"])
       session[:user_id] = @user.id
-      redirect to " "
+      erb :"users/show"
     else
       redirect to '/signup'
     end
@@ -22,7 +22,7 @@ class UsersController < ApplicationController
     if !logged_in?
       erb :"users/login"
     else
-      redirect to ' '
+      erb :"users/show"
     end
   end
 
@@ -32,7 +32,7 @@ class UsersController < ApplicationController
       session[:user_id] = @user.id
       redirect to ' '
     else
-      redirect to '/'
+      erb :"users/show"
     end
   end
 
