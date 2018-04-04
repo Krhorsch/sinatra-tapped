@@ -26,37 +26,33 @@ class BeersController < ApplicationController
     end
   end
 
-  delete '/tweets/:id' do
-    @tweet = Tweet.find_by(id: params[:id])
-    if current_user.id == @tweet.user_id
-      @tweet.delete
-    end
-    redirect to "/tweets"
+  delete '/beers/:id' do
+    @beer = Beer.find_by(id: params[:id])
+    redirect to "/beers"
   end
 
-  patch '/tweets/:id' do
-    @tweet = Tweet.find_by(id: params[:id])
-    if !params["content"].empty?
-      @tweet.update(content: params["content"])
-      redirect to "/tweets/#{@tweet.id}"
-    else
-      redirect to "/tweets/#{@tweet.id}/edit"
-    end
-  end
-
-
-  get '/tweets/:id/edit' do
+  get '/beers/:id/edit' do
     if logged_in?
-      @tweet = Tweet.find_by(id: params[:id])
-      erb :"/tweets/edit_tweet"
+      @beer = Beer.find_by(id: params[:id])
+      erb :"/beers/edit_beer"
     else
       redirect to "/login"
     end
   end
 
-  get '/tweets/:id' do
+  patch '/beers/:id' do
+    @beer = Beer.find_by(id: params[:id])
+    if !params["name"].empty? && !params["brewery"].empty?
+      @beer.update(name: params["name"], brewery: params["brewery"])
+      redirect to "/beers/#{@beer.id}"
+    else
+      redirect to "/tweets/#{@beer.id}/edit"
+    end
+  end
+
+  get '/beers/:id' do
     if logged_in?
-      @tweet = Tweet.find_by(id: params[:id])
+      @beers = Beer.find_by(id: params[:id])
       erb :"/tweets/show_tweet"
     else
       redirect to '/login'
