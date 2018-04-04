@@ -1,0 +1,12 @@
+User.create(username: "kyle", password_digest: "horsch", email: "kyle@aol.com")
+User.create(username: "kate", password_digest: "mclean", email: "kate@aol.com")
+User.create(username: "kristin", password_digest: "styler", email: "kristin@aol.com")
+User.create(username: "cheryl", password_digest: "leahy", email: "cheryl@aol.com")
+
+Beer.create(name: "Honeyspot", brewery: "Two Roads")
+Beer.create(name: "Lil Heaven", brewery: "Two Roads")
+Beer.create(name: "Rebel IPA", brewery: "Sam Adams")
+Beer.create(name: "BudLight", brewery: "Anheuser-Busch")
+Beer.create(name: "BudHeavy", brewery: "Anheuser-Busch")
+Beer.create(name: "PBR", brewery: "Pabst Brewing")
+Beer.create(name: "All Day IPA", brewery: "Founders")
