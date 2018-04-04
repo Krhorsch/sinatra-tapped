@@ -53,7 +53,7 @@ class BeersController < ApplicationController
   get '/beers/:id' do
     if logged_in?
       @beers = Beer.find_by(id: params[:id])
-      erb :"/tweets/show_tweet"
+      erb :"/beers/show_beer"
     else
       redirect to '/login'
     end
