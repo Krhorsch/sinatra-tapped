@@ -20,10 +20,15 @@ class BeersController < ApplicationController
   post '/beers' do
     if !params["name"].empty? && !params["brewery"].empty?
       @beer = Beer.create(name: params["name"], brewery: params["brewery"])
-      redirect to '/beers'
-    else
-      redirect to '/beers/new'
+      current_user.beers << @beer
     end
+    if !params["beers"].empty?
+      params["beers"].each do |beer|
+        new_beer = Beer.find_by(name: beer)
+        current_user.beers << new_beer
+      end
+    end
+      redirect to "/users/:id"
   end
 
   delete '/beers/:id' do
