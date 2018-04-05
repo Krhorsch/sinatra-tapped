@@ -4,7 +4,7 @@ class UsersController < ApplicationController
     if !logged_in?
       erb :"users/create_user"
     else
-      erb :"users/show"
+      redirect to  "/users/:id"
     end
   end
 
