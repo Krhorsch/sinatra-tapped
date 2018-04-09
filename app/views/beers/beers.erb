@@ -1,5 +1,6 @@
 <a href="/logout">Log Out</a>
+<a href="/users/:id">Home</a>
 <h2>Welcome, <%=@user.username%></h2>
 <%@beers.each do |beer|%>
-<%=beer.name%> <%=beer.brewery%>
+<p><%=beer.name%> <%=beer.brewery%></p>
 <%end%>

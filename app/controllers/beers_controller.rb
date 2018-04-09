@@ -34,7 +34,8 @@ class BeersController < ApplicationController
 
   delete '/beers/:id' do
     @beer = Beer.find_by(id: params[:id])
-    redirect to "/beers"
+    @beer.delete
+    redirect to "/users/:id"
   end
 
   get '/beers/:id/edit' do
