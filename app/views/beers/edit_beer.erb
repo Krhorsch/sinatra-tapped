@@ -1,0 +1,8 @@
+<a href="/logout">Log Out</a>
+<p><%=@beer.name%> <%=@beer.brewery%></p>
+<form action="/beers/<%=@beer.id%>" method="POST">
+  <input id="hidden" type="hidden" name="_method" value="PATCH">
+  <p>Beer: <input type="text" name="name" id="name"></p>
+  <p>Brewery: <input type="text" name="brewery" id="brewery"></p>
+  <input type="submit" value="submit" id="submit">
+</form>

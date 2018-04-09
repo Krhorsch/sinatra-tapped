@@ -2,7 +2,7 @@
 <h2>Welcome, <%=@user.username%></h2>
 <h3>These are all the beers you have tapped so far:</h3>
 <%@user.beers.each do |beer|%>
-<p> <%=beer.name%> <%=beer.brewery%></p></br>
-<%end%>
+<p> <%=beer.name%> <%=beer.brewery%> <a href="/beers/<%=beer.id%>/edit">Edit Beer</a> </p>
+<%end%></br>
 
 <a href="/beers/new">Click Here to Tap A New Beer!</a>

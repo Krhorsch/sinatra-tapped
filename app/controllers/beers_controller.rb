@@ -3,6 +3,7 @@ class BeersController < ApplicationController
   get '/beers' do
     if logged_in?
       @user = current_user
+      @beers = Beer.all
       erb :"/beers/beers"
     else
       redirect to '/login'
@@ -21,7 +22,7 @@ class BeersController < ApplicationController
     if params["name"] && params["brewery"]
       @beer = Beer.create(name: params["name"], brewery: params["brewery"])
       current_user.beers << @beer
-      if !params["beers"].empty?
+      if params["beers"]
         params["beers"].each do |beer|
           new_beer = Beer.find_by(name: beer)
           current_user.beers << new_beer
@@ -39,7 +40,9 @@ class BeersController < ApplicationController
   get '/beers/:id/edit' do
     if logged_in?
       @beer = Beer.find_by(id: params[:id])
-      erb :"/beers/edit_beer"
+      if @beer.user_id == current_user.id
+        erb :"/beers/edit_beer"
+      end
     else
       redirect to "/login"
     end
@@ -51,13 +54,13 @@ class BeersController < ApplicationController
       @beer.update(name: params["name"], brewery: params["brewery"])
       redirect to "/beers/#{@beer.id}"
     else
-      redirect to "/tweets/#{@beer.id}/edit"
+      redirect to "/beers/#{@beer.id}/edit"
     end
   end
 
   get '/beers/:id' do
     if logged_in?
-      @beers = Beer.find_by(id: params[:id])
+      @beer = Beer.find_by(id: params[:id])
       erb :"/beers/show_beer"
     else
       redirect to '/login'
