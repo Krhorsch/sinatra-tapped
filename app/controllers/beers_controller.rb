@@ -12,10 +12,14 @@ class BeersController < ApplicationController
 
   get '/beers/new' do
     if logged_in?
-      @beer_names = Beer.all.collect |beer|
-        beer.name
+      @beer_names = Beer.all.collect{|beer| beer.name}.uniq
+      @user_beer_names = current_user.beers.collect{|beer| beer.name}
+      @beers = []
+      @beer_names.each do |x|
+        if !@user_beer_names.include?(x)
+          @beers << x
+        end
       end
-      @beers = @beer_names.uniq
       erb :"/beers/create_beer"
     else
       redirect to '/login'
@@ -38,17 +42,18 @@ class BeersController < ApplicationController
 
   delete '/beers/:id' do
     @beer = Beer.find_by(id: params[:id])
-    binding.pry
-    @be
-    redirect to "/users/:id"
+    if @beer.user_id == current_user.id
+      @beer.delete
+      redirect to "/users/:id"
+    else
+      redirect to "/users/:id"
+    end
   end
 
   get '/beers/:id/edit' do
-    if logged_in?
-      @beer = Beer.find_by(id: params[:id])
-      if @beer.user_id == current_user.id
-        erb :"/beers/edit_beer"
-      end
+    @beer = Beer.find_by(id: params[:id])
+    if logged_in? && @beer.user_id == current_user.id
+      erb :"/beers/edit_beer"
     else
       redirect to "/login"
     end
