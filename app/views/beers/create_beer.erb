@@ -2,8 +2,8 @@
 <form action="/beers" method="POST">
   <p>Beer: <input type="text" name="name" id="name"></p>
   <p>Brewery: <input type="text" name="brewery" id="brewery"></p>
-  <% Beer.all.each do |beer| %>
-  <label><input id="<%= beer.name %>" type="checkbox" name="beers[]" value="<%= beer.name %>"> <%= beer.name %>, <%= beer.brewery %></label> </br>
+  <% @beers.each do |beer| %>
+  <label><input id="<%= beer %>" type="checkbox" name="beers[]" value="<%= beer %>"> <%= beer %> <%= Beer.find_by(name: beer).brewery %></label> </br>
   <% end %>
   <input type="submit" value="Create" id="Create">
 </form>
