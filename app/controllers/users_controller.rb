@@ -12,10 +12,11 @@ class UsersController < ApplicationController
 
   post '/signup' do
     if !params["username"].empty? && !params["password"].empty? && !params["email"].empty?
-      if !User.all_usernames.include?(params["username"]) && !User.all_emails.include?(params["email"])
-        @user = User.create(username: params["username"], password_digest: params["password"], email: params["email"])
+      #if !User.all_usernames.include?(params["username"]) && !User.all_emails.include?(params["email"])
+      if !User.find_by(username: params[:username] && !User.find_by(email: params[:email]))
+        @user = User.create(username: params["username"], password: params["password"], email: params["email"])
         session[:user_id] = @user.id
-        erb :"users/show"
+        redirect to "/users/#{current_user.id}"
       else
         flash[:message] = "The username or email you have chosen is not unique"
         redirect to '/signup'
@@ -38,7 +39,7 @@ class UsersController < ApplicationController
     @user = User.find_by(username: params[:username])
     if @user
       session[:user_id] = @user.id
-      redirect to "/users/:id"
+      redirect to "/users/#{current_user.id}"
     else
       redirect to "/login"
     end

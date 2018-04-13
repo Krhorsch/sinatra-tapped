@@ -14,11 +14,8 @@ class BeersController < ApplicationController
     if logged_in?
       @beer_names = Beer.all.collect{|beer| beer.name}.uniq
       @user_beer_names = current_user.beers.collect{|beer| beer.name}
-      @beers = []
-      @beer_names.each do |x|
-        if !@user_beer_names.include?(x)
-          @beers << x
-        end
+      @beers = @beer_names.select do |x|
+        !@user_beer_names.include?(x)
       end
       erb :"/beers/create_beer"
     else
@@ -37,14 +34,14 @@ class BeersController < ApplicationController
         Beer.create(name: "#{beer}", brewery: "#{new_beer.brewery}", user_id: "#{current_user.id}")
       end
     end
-      redirect to "/users/:id"
+      redirect to "/users/#{current_user.id}"
   end
 
   delete '/beers/:id' do
     @beer = Beer.find_by(id: params[:id])
     if @beer.user_id == current_user.id
       @beer.delete
-      redirect to "/users/:id"
+      redirect to "/users/#{current_user.id}"
     else
       redirect to "/login"
     end
@@ -61,7 +58,7 @@ class BeersController < ApplicationController
 
   patch '/beers/:id' do
     @beer = Beer.find_by(id: params[:id])
-    if !params["name"].empty? && !params["brewery"].empty?
+    if !params["name"].empty? && !params["brewery"].empty? && @beer.user_id == current_user.id
       @beer.update(name: params["name"], brewery: params["brewery"])
       redirect to "/beers/#{@beer.id}"
     else

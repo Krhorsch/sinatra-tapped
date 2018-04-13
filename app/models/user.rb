@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   has_many :beers
+  has_secure_password
 
   def self.all_usernames
     self.all.collect do |x|
