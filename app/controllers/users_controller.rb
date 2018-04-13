@@ -1,4 +1,6 @@
+require 'rack-flash'
 class UsersController < ApplicationController
+  use Rack::Flash
 
   get '/signup' do
     if !logged_in?
@@ -10,10 +12,16 @@ class UsersController < ApplicationController
 
   post '/signup' do
     if !params["username"].empty? && !params["password"].empty? && !params["email"].empty?
-      @user = User.create(username: params["username"], password_digest: params["password"], email: params["email"])
-      session[:user_id] = @user.id
-      erb :"users/show"
+      if !User.all_usernames.include?(params["username"]) && !User.all_emails.include?(params["email"])
+        @user = User.create(username: params["username"], password_digest: params["password"], email: params["email"])
+        session[:user_id] = @user.id
+        erb :"users/show"
+      else
+        flash[:message] = "The username or email you have chosen is not unique"
+        redirect to '/signup'
+      end
     else
+      flash[:message] = "Make sure all fields are filled out"
       redirect to '/signup'
     end
   end

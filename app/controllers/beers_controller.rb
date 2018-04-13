@@ -46,7 +46,7 @@ class BeersController < ApplicationController
       @beer.delete
       redirect to "/users/:id"
     else
-      redirect to "/users/:id"
+      redirect to "/login"
     end
   end
 
